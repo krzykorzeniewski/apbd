@@ -60,5 +60,8 @@ public abstract class Container
 
     public abstract void LoadCargo(double cargoWeight);
 
-
+    public override string ToString()
+    {
+        return $"Container no. {_serialNumber}, total cargo weight: {_cargoWeight}";
+    }
 }

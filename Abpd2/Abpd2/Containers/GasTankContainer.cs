@@ -1,4 +1,5 @@
-﻿using Abpd2.Interfaces;
+﻿using Abpd2.Exceptions;
+using Abpd2.Interfaces;
 
 namespace Abpd2.Containers;
 
@@ -6,22 +7,30 @@ public class GasTankContainer : Container, IHazardNotifier
 {
     private double _internalPressure;
 
-    public GasTankContainer(double weight, double cargoWeight, double height, double depth, double maximumLoad, char type) : base(weight, cargoWeight, height, depth, maximumLoad, type)
+    public GasTankContainer(double weight, double cargoWeight, double height, double depth, double maximumLoad, 
+        char type, double internalPressure) 
+        : base(weight, cargoWeight, height, depth, maximumLoad, type)
     {
+        _internalPressure = internalPressure;
     }
 
     public override void Unload()
     {
-        throw new NotImplementedException();
+        _cargoWeight *= 0.05;
     }
 
     public override void LoadCargo(double cargoWeight)
     {
-        throw new NotImplementedException();
+        if (_cargoWeight + cargoWeight > _maximumLoad)
+        {
+            throw new LoadLimitException("Too much load!");
+        }
+        _cargoWeight += cargoWeight;
+        Console.WriteLine("Cargo loaded!");
     }
 
     public string Notify()
     {
-        throw new NotImplementedException();
+        return "Warning, danger! container no: " + SerialNumber;
     }
 }
