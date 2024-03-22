@@ -6,23 +6,23 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        createContainer();
+        CreateContainer();
     }
 
-    public static Container createContainer()
+    public static Container CreateContainer()
     {
         Console.WriteLine("Enter container type (L - luqid, G - gas, R - refrigerated)");
         char type = Convert.ToChar(Console.ReadLine() ?? string.Empty);
         switch (type)
         {
             case 'L':
-                return createLiquidContainer();
+                return CreateLiquidContainer();
                 break;
             case 'G':
-                return createGasTankContainer();
+                return CreateGasTankContainer();
                 break;
             case 'R':
-                return createRefrigeratedContainer();
+                return CreateRefrigeratedContainer();
                 break;
             default:
                 Console.WriteLine("Try again!");
@@ -31,7 +31,7 @@ public class Program
         }
     }
 
-    private static Container createRefrigeratedContainer()
+    private static Container CreateRefrigeratedContainer()
     {
         Console.WriteLine("Enter parameters (line by line):  " +
                           "weight, cargoWeight, height, depth, maximumLoad, type, internalTemp" +
@@ -52,7 +52,7 @@ public class Program
         return container;
     }
 
-    private static Container createGasTankContainer()
+    private static Container CreateGasTankContainer()
     {
         Console.WriteLine("Enter parameters (line by line):  " +
                           "weight, cargoWeight, height, depth, maximumLoad, type, internalPressure");
@@ -70,7 +70,7 @@ public class Program
         return container;
     }
 
-    private static Container createLiquidContainer()
+    private static Container CreateLiquidContainer()
     {
         Console.WriteLine("Enter parameters (line by line):  " +
                           "weight, cargoWeight, height, depth, maximumLoad, type, hazardousCargo (True or False)");
