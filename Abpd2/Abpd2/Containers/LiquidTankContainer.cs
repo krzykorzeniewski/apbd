@@ -8,9 +8,9 @@ public class LiquidTankContainer : Container, IHazardNotifier
 
     private bool _containsHazardousCargo;
     
-    public LiquidTankContainer(double weight, double cargoWeight, double height, double depth, double maximumLoad, char type,
+    public LiquidTankContainer(double weight, double height, double depth, double maximumLoad, char type,
         bool containsHazardousCargo)
-        : base(weight, cargoWeight, height, depth, maximumLoad, type)
+        : base(weight, height, depth, maximumLoad, type)
     {
         _containsHazardousCargo = containsHazardousCargo;
     }

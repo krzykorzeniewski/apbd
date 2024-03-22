@@ -13,11 +13,10 @@ public abstract class Container
     private char _type;
     private string _serialNumber;
 
-    protected Container(double weight, double cargoWeight, double height, double depth, double maximumLoad, 
+    protected Container(double weight, double height, double depth, double maximumLoad, 
         char type)
     {
         _weight = weight;
-        _cargoWeight = cargoWeight;
         _height = height;
         _depth = depth;
         _maximumLoad = maximumLoad;
@@ -37,19 +36,7 @@ public abstract class Container
         get => _cargoWeight;
         set => _cargoWeight = value;
     }
-
-    public double Height
-    {
-        get => _height;
-        set => _height = value;
-    }
-
-    public double Depth
-    {
-        get => _depth;
-        set => _depth = value;
-    }
-
+    
     public string SerialNumber
     {
         get => _serialNumber;
@@ -62,6 +49,6 @@ public abstract class Container
 
     public override string ToString()
     {
-        return $"Container no. {_serialNumber}, total cargo weight: {_cargoWeight}";
+        return $"Container no. {_serialNumber}, type: {_type}, total cargo weight: {_cargoWeight}";
     }
 }

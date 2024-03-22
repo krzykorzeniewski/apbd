@@ -10,9 +10,9 @@ public class RefrigeratedContainer : Container
     private string _typeOfProduct;
     private List<Product> _products;
 
-    public RefrigeratedContainer(double weight, double cargoWeight, double height, double depth, double maximumLoad,
+    public RefrigeratedContainer(double weight, double height, double depth, double maximumLoad,
         char type, double internalTemperature, string typeOfProduct) 
-        : base(weight, cargoWeight, height, depth, maximumLoad, type)
+        : base(weight, height, depth, maximumLoad, type)
     {
         _internalTemperature = internalTemperature;
         _typeOfProduct = typeOfProduct;

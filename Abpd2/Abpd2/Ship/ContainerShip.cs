@@ -5,6 +5,8 @@ namespace Abpd2.Ship;
 
 public class ContainerShip
 {
+    private static int _counter;
+    private int _serialNumber;
     private List<Container> _containers;
     private double _maxSpeed;
     private int _maxAmountOfContainers;
@@ -13,6 +15,7 @@ public class ContainerShip
 
     public ContainerShip(double maxSpeed, int maxAmountOfContainers, double maxCargoWeight)
     {
+        _serialNumber = _counter++;
         _maxSpeed = maxSpeed;
         _maxAmountOfContainers = maxAmountOfContainers;
         _maxCargoWeight = maxCargoWeight;
@@ -58,6 +61,21 @@ public class ContainerShip
         }
     }
 
+    public void SwapContainer(Container container, string serialNumber)
+    {
+        Container temp = _containers.Find(c => c.SerialNumber == serialNumber);
+        RemoveContainer(temp);
+        try
+        {
+            AddContainer(container);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Unable to replace container, try again!");
+            AddContainer(temp);
+        }
+    }
+
     private void CheckWeightAndContainerCount(List<Container> containers)
     {
         if (CalculateCurrentWeight(containers)  > _maxCargoWeight)
@@ -82,5 +100,17 @@ public class ContainerShip
     private void UpdateWeight()
     {
         _currentWeight = CalculateCurrentWeight(_containers);
+    }
+
+    public override string ToString()
+    {
+        return $"Ship no. {_serialNumber} (speed = {_maxSpeed}, maxContainerNum = {_maxAmountOfContainers} " +
+               $", maxWeight = {_maxCargoWeight})";
+    }
+
+    public List<Container> Containers
+    {
+        get => _containers;
+        set => _containers = value ?? throw new ArgumentNullException(nameof(value));
     }
 }
