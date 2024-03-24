@@ -7,7 +7,7 @@ public class ContainerShip
 {
     private static int _counter;
     private int _serialNumber;
-    private List<Container> _containers;
+    private List<Container?> _containers;
     private double _maxSpeed;
     private int _maxAmountOfContainers;
     private double _maxCargoWeight;
@@ -19,13 +19,13 @@ public class ContainerShip
         _maxSpeed = maxSpeed;
         _maxAmountOfContainers = maxAmountOfContainers;
         _maxCargoWeight = maxCargoWeight;
-        _containers = new List<Container>();
+        _containers = new List<Container?>();
         _currentWeight = CalculateCurrentWeight(_containers);
     }
 
-    public void AddContainer(Container container)
+    public void AddContainer(Container? container)
     {
-        List<Container> tempList = _containers;
+        List<Container?> tempList = _containers;
         tempList.Add(container);
         
         CheckWeightAndContainerCount(tempList);
@@ -37,7 +37,7 @@ public class ContainerShip
 
     public void AddContainers(List<Container> containers)
     {
-        List<Container> tempList = _containers;
+        List<Container?> tempList = _containers;
         tempList.AddRange(containers);
         
         CheckWeightAndContainerCount(tempList);
@@ -48,7 +48,7 @@ public class ContainerShip
 
     }
 
-    public void RemoveContainer(Container container)
+    public void RemoveContainer(Container? container)
     {
         if (_containers.Remove(container))
         {
@@ -61,9 +61,9 @@ public class ContainerShip
         }
     }
 
-    public void SwapContainer(Container container, string serialNumber)
+    public void SwapContainer(Container? container, string serialNumber)
     {
-        Container temp = _containers.Find(c => c.SerialNumber == serialNumber);
+        Container? temp = _containers.Find(c => c.SerialNumber == serialNumber);
         RemoveContainer(temp);
         try
         {
@@ -76,7 +76,7 @@ public class ContainerShip
         }
     }
 
-    private void CheckWeightAndContainerCount(List<Container> containers)
+    private void CheckWeightAndContainerCount(List<Container?> containers)
     {
         if (CalculateCurrentWeight(containers)  > _maxCargoWeight)
         {
@@ -87,10 +87,10 @@ public class ContainerShip
             throw new ContainerLimitException("Maximum container amount reached! Unable to add container!");
         }
     }
-    private double CalculateCurrentWeight(List<Container> containers)
+    private double CalculateCurrentWeight(List<Container?> containers)
     {
         double tempWeight = 0.0;
-        foreach (Container temp in containers) 
+        foreach (Container? temp in containers) 
         {
             tempWeight += temp.Weight + temp.CargoWeight;
         }
@@ -108,7 +108,7 @@ public class ContainerShip
                $", maxWeight = {_maxCargoWeight})";
     }
 
-    public List<Container> Containers
+    public List<Container?> Containers
     {
         get => _containers;
         set => _containers = value ?? throw new ArgumentNullException(nameof(value));
