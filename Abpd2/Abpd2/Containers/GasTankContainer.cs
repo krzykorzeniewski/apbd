@@ -7,9 +7,9 @@ public class GasTankContainer : Container, IHazardNotifier
 {
     private double _internalPressure;
 
-    public GasTankContainer(double weight, double cargoWeight, double height, double depth, double maximumLoad, 
+    public GasTankContainer(double weight, double height, double depth, double maximumLoad, 
         char type, double internalPressure) 
-        : base(weight, cargoWeight, height, depth, maximumLoad, type)
+        : base(weight, height, depth, maximumLoad, type)
     {
         _internalPressure = internalPressure;
     }
