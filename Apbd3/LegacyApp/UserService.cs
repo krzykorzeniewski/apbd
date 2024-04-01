@@ -6,28 +6,23 @@ namespace LegacyApp
     {
         public bool AddUser(string firstName, string lastName, string email, DateTime dateOfBirth, int clientId)
         {
-            if (string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName))
+            if (CheckFirstName(firstName) || CheckLastName(lastName))
             {
                 return false;
             }
 
-            if (!email.Contains("@") && !email.Contains("."))
+            if (ValidateEmail(email))
             {
                 return false;
             }
 
-            var now = DateTime.Now;
-            int age = now.Year - dateOfBirth.Year;
-            if (now.Month < dateOfBirth.Month || (now.Month == dateOfBirth.Month && now.Day < dateOfBirth.Day)) age--;
-
+            int age = CalculateAge(dateOfBirth);
             if (age < 21)
             {
                 return false;
             }
 
-            var clientRepository = new ClientRepository();
-            var client = clientRepository.GetById(clientId);
-
+            var client = GetClientFromRepo(clientId);
             var user = new User
             {
                 Client = client,
@@ -36,7 +31,7 @@ namespace LegacyApp
                 FirstName = firstName,
                 LastName = lastName
             };
-
+            
             if (client.Type == "VeryImportantClient")
             {
                 user.HasCreditLimit = false;
@@ -67,6 +62,39 @@ namespace LegacyApp
 
             UserDataAccess.AddUser(user);
             return true;
+        }
+
+        private static Client GetClientFromRepo(int clientId)
+        {
+            var clientRepository = new ClientRepository();
+            var client = clientRepository.GetById(clientId);
+            return client;
+        }
+
+        private int CalculateAge(DateTime dateOfBirth)
+        {
+            var now = DateTime.Now;
+            int res = now.Year - dateOfBirth.Year;
+            
+            if (now.Month < dateOfBirth.Month || (now.Month == dateOfBirth.Month && now.Day < dateOfBirth.Day))
+                res--;
+            
+            return res;
+        }
+
+        private static bool ValidateEmail(string email)
+        {
+            return !email.Contains("@") && !email.Contains(".");
+        }
+
+        private static bool CheckLastName(string lastName)
+        {
+            return string.IsNullOrEmpty(lastName);
+        }
+
+        private static bool CheckFirstName(string firstName)
+        {
+            return string.IsNullOrEmpty(firstName);
         }
     }
 }
