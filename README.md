@@ -1,1 +1,1 @@
-# apbd
+# aplikacje baz danych
