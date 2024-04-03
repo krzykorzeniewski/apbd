@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Threading;
-using LegacyApp;
 using Xunit;
 
 namespace LegacyApp.Tests;
@@ -16,7 +14,7 @@ public class UserServiceTest
         //Act
         bool res = userService.AddUser("", "Doe", "doe@gmail.com", DateTime.Now, 1);
         //Assert
-        Assert.Equal(false, res);
+        Assert.False(res);
     }
 
     [Fact]
@@ -26,7 +24,7 @@ public class UserServiceTest
         
         bool res = userService.AddUser("John", null, "doe@gmail.com", DateTime.Now, 1);
         
-        Assert.Equal(false, res);
+        Assert.False(res);
     }
 
     [Fact]
@@ -36,7 +34,7 @@ public class UserServiceTest
         
         bool res = userService.AddUser("John", "Doe", "doegmailcom", DateTime.Now, 1);
         
-        Assert.Equal(false, res);
+        Assert.False(res);
     }
 
     [Fact]
@@ -47,7 +45,7 @@ public class UserServiceTest
         bool res = userService.AddUser("John", "Doe", "doe@gmail.com", DateTime.Parse(
             "2005-10-10"), 1);
         
-        Assert.Equal(false, res);
+        Assert.False(res);
     }
 
     [Fact]
@@ -60,7 +58,6 @@ public class UserServiceTest
             userService.AddUser("John", "Doe", "doe@gmail.com", DateTime.Parse(
                 "1980-10-10"), 1000);
         });
-        
     }
 
     [Fact]
@@ -74,5 +71,26 @@ public class UserServiceTest
                 "1980-10-10"), 1);
         });
     }
-    
+
+    [Fact]
+    public void AddUser_Should_Return_False_When_User_Has_Credit_Limit_And_Credit_Limit_Under_500()
+    {
+        var userService = new UserService();
+
+        bool res = userService.AddUser("John", "Kowalski", "doe@gmail.com", DateTime.Parse(
+            "1980-10-10"), 1);
+        
+        Assert.False(res);
+    }
+
+    [Fact]
+    public void AddUser_Should_Return_True_When_User_Is_Important_Or_Very_Important_Client()
+    {
+        var userService = new UserService();
+
+        bool res = userService.AddUser("John", "Doe", "doe@gmail.com", DateTime.Parse(
+            "1980-10-10"), 1);
+        
+        Assert.True(res);
+    }
 }

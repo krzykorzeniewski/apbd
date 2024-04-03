@@ -2,8 +2,24 @@
 
 namespace LegacyApp
 {
+    public interface IRepository
+    {
+        public Client GetById(int clientId);
+    }
     public class UserService
     {
+        
+        //Wstrzykiwanie zaleznosci
+        private IRepository _repository;
+
+        //trzeba tutaj przypisac "na sztywno" ClientRepository, gdyz nie mozna zmieniac LegacyAppConsumer i zastosowac
+        //wstrzykiwania poprzez konstruktor, docelowo powinnismy jako argument konstruktora podac dowolna implementacje
+        //IRepository
+        public UserService()
+        {
+            _repository = new ClientRepository();
+        }
+        
         public bool AddUser(string firstName, string lastName, string email, DateTime dateOfBirth, int clientId)
         {
             if (CheckFirstName(firstName) || CheckLastName(lastName))
@@ -22,7 +38,7 @@ namespace LegacyApp
                 return false;
             }
 
-            var client = GetClientFromRepo(clientId);
+            var client = GetClientFromDb(clientId);
             var user = new User
             {
                 Client = client,
@@ -31,30 +47,9 @@ namespace LegacyApp
                 FirstName = firstName,
                 LastName = lastName
             };
-            
-            if (client.Type == "VeryImportantClient")
-            {
-                user.HasCreditLimit = false;
-            }
-            else if (client.Type == "ImportantClient")
-            {
-                using (var userCreditService = new UserCreditService())
-                {
-                    int creditLimit = userCreditService.GetCreditLimit(user.LastName, user.DateOfBirth);
-                    creditLimit = creditLimit * 2;
-                    user.CreditLimit = creditLimit;
-                }
-            }
-            else
-            {
-                user.HasCreditLimit = true;
-                using (var userCreditService = new UserCreditService())
-                {
-                    int creditLimit = userCreditService.GetCreditLimit(user.LastName, user.DateOfBirth);
-                    user.CreditLimit = creditLimit;
-                }
-            }
 
+            CalculateClientCreditLimit(client, user);
+            
             if (user.HasCreditLimit && user.CreditLimit < 500)
             {
                 return false;
@@ -64,10 +59,50 @@ namespace LegacyApp
             return true;
         }
 
-        private static Client GetClientFromRepo(int clientId)
+        private void CalculateClientCreditLimit(Client client, User user)
         {
-            var clientRepository = new ClientRepository();
-            var client = clientRepository.GetById(clientId);
+            switch (client.Type)
+            {
+                case "VeryImportantClient":
+                    SetVeryImportantClientCreditLimit(user);
+                    break;
+                case "ImportantClient":
+                    SetImportantClientCreditLimit(user);
+                    break;
+                default:
+                    SetNotImportantClientCreditLimit(user);
+                    break;
+            }
+        }
+
+        private void SetVeryImportantClientCreditLimit(User user)
+        {
+            user.HasCreditLimit = false;
+        }
+
+        private void SetNotImportantClientCreditLimit(User user)
+        {
+            user.HasCreditLimit = true;
+            using (var userCreditService = new UserCreditService())
+            {
+                int creditLimit = userCreditService.GetCreditLimit(user.LastName, user.DateOfBirth);
+                user.CreditLimit = creditLimit;
+            }
+        }
+
+        private void SetImportantClientCreditLimit(User user)
+        {
+            using (var userCreditService = new UserCreditService())
+            {
+                int creditLimit = userCreditService.GetCreditLimit(user.LastName, user.DateOfBirth);
+                creditLimit = creditLimit * 2;
+                user.CreditLimit = creditLimit;
+            }
+        }
+
+        private Client GetClientFromDb(int clientId)
+        {
+            var client = _repository.GetById(clientId);
             return client;
         }
 
