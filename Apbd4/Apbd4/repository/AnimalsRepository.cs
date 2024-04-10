@@ -36,4 +36,23 @@ public class AnimalsRepository : IAnimalsRepository
     {
         return _animals;
     }
+
+    public Animal? GetById(int id)
+    {
+        return _animals.FirstOrDefault(e => e.Id == id);
+    }
+
+    public void Add(Animal animal)
+    {
+        _animals.Add(animal);
+    }
+
+    public Animal? RemoveById(int id)
+    {
+        var animalToRemove = _animals.FirstOrDefault(e => e.Id == id);
+        
+        _animals.Remove(animalToRemove);
+        
+        return animalToRemove;
+    }
 }
