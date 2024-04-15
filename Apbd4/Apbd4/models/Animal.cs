@@ -7,5 +7,6 @@ public class Animal
     public string Category { get; set; }
     public double Weight { get; set; }
     public String Color { get; set; }
+    public ICollection<Visit> Visits { get; set; }
     
 }

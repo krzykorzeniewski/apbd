@@ -11,4 +11,6 @@ public interface IAnimalsRepository
     public void Add(Animal animal);
 
     public Animal? RemoveById(int id);
+
+    public ICollection<Visit> GetAllVisits();
 }

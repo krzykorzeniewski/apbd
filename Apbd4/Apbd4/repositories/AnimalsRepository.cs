@@ -12,7 +12,8 @@ public class AnimalsRepository : IAnimalsRepository
             Name = "Franek",
             Category = "Rekin Młot",
             Weight = 5000.0,
-            Color = "Niebieskoszary"
+            Color = "Niebieskoszary",
+            Visits = new List<Visit>()
         }, 
         new Animal
         {
@@ -20,7 +21,8 @@ public class AnimalsRepository : IAnimalsRepository
             Name = "Jarek", 
             Category = "Jamnik",
             Weight = 10.5,
-            Color = "Brązowy"
+            Color = "Brązowy",
+            Visits = new List<Visit>()
         },
         new Animal
         {
@@ -28,7 +30,8 @@ public class AnimalsRepository : IAnimalsRepository
             Name = "Jazzy",
             Category = "Labrador Retriever",
             Weight = 30.0,
-            Color = "Ciasteczkowy"
+            Color = "Ciasteczkowy",
+            Visits = new List<Visit>()
         }
     };
 
@@ -54,5 +57,10 @@ public class AnimalsRepository : IAnimalsRepository
         _animals.Remove(animalToRemove);
         
         return animalToRemove;
+    }
+
+    public ICollection<Visit> GetAllVisits()
+    {
+        throw new NotImplementedException();
     }
 }
