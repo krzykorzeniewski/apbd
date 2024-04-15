@@ -1,0 +1,6 @@
+@Apbd4MinimalApi_HostAddress = http://localhost:5069
+
+GET {{Apbd4MinimalApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
