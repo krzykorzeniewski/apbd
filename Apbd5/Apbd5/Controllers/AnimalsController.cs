@@ -17,9 +17,9 @@ public class AnimalsController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult GetAll()
+    public IActionResult GetAll(string orderBy = "name")
     {
-        var res = _animalsRepository.GetAll();
+        var res = _animalsRepository.GetAll(orderBy);
         return Ok(res);
     }
 

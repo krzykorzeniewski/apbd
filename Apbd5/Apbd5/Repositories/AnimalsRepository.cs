@@ -53,13 +53,33 @@ public class AnimalsRepository : IAnimalsRepository
         return (int)sqlCommand.ExecuteScalar();
     }
 
-    public IEnumerable<AnimalGetDto> GetAll()
+    public IEnumerable<AnimalGetDto> GetAll(string orderBy)
     {
         var res = new List<AnimalGetDto>();
         
+        //walidacja aby nie dopuscic mozliwosci wstrzykniecia jakiegos kodu sql
+        bool safetyFlag = false;
+        var columnNames = new List<string>(){ "name", "description", "category", "area" };
+
+        if (columnNames.Contains(orderBy))
+        {
+            safetyFlag = true;
+        }
+
+        string com;
+        switch (safetyFlag)
+        {
+            case true:
+                com = $"SELECT * FROM Animal ORDER BY {orderBy} ASC";
+                break;
+            default:
+                com = "SELECT * FROM Animal";
+                break;
+        }
+        
         using (var sqlConnection = new SqlConnection(_configuration.GetConnectionString("Default")))
         {
-            var sqlCommand = new SqlCommand("SELECT * FROM Animal", sqlConnection);
+            var sqlCommand = new SqlCommand(com, sqlConnection);
             sqlCommand.Connection.Open();
             var reader = sqlCommand.ExecuteReader();
             
