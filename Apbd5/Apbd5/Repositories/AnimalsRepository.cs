@@ -57,25 +57,7 @@ public class AnimalsRepository : IAnimalsRepository
     {
         var res = new List<AnimalGetDto>();
         
-        //walidacja aby nie dopuscic mozliwosci wstrzykniecia jakiegos kodu sql
-        bool safetyFlag = false;
-        var columnNames = new List<string>(){ "name", "description", "category", "area" };
-
-        if (columnNames.Contains(orderBy))
-        {
-            safetyFlag = true;
-        }
-
-        string com;
-        switch (safetyFlag)
-        {
-            case true:
-                com = $"SELECT * FROM Animal ORDER BY {orderBy} ASC";
-                break;
-            default:
-                com = "SELECT * FROM Animal";
-                break;
-        }
+        string com = AppendOrderByClause(orderBy);
         
         using (var sqlConnection = new SqlConnection(_configuration.GetConnectionString("Default")))
         {
@@ -124,5 +106,23 @@ public class AnimalsRepository : IAnimalsRepository
         sqlCommand.Connection.Open();
 
         return sqlCommand.ExecuteNonQuery();
+    }
+    
+    private string AppendOrderByClause(string orderBy)
+    {
+        bool safetyFlag = false;
+        var columnNames = new List<string>(){ "name", "description", "category", "area" };
+        
+        if (columnNames.Contains(orderBy))
+        {
+            safetyFlag = true;
+        }
+        
+        if (!safetyFlag)
+        {
+            return "SELECT * FROM Animal";
+        }
+
+        return $"SELECT * FROM Animal ORDER BY {orderBy} ASC";
     }
 }
