@@ -13,11 +13,13 @@ public class WarehouseRepositoryImpl : IWarehouseRepository
         _configuration = configuration;
     }
     
-    public async void Add(ProductWarehouseDto productWarehouseDto)
+    public async Task<ProductWarehouseDto> Add(ProductWarehouseDto productWarehouseDto)
     {
-        using (var sqlConnection = new SqlConnection(_configuration.GetConnectionString("Default")))
+        await using (var sqlConnection = new SqlConnection(_configuration.GetConnectionString("Default")))
         {
             
         }
+
+        throw new NotImplementedException();
     }
 }
