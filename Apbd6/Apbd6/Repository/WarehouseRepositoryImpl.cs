@@ -5,7 +5,7 @@ namespace Abpd6.Repository
 {
     public class WarehouseRepositoryImpl : IWarehouseRepository
     {
-        private IConfiguration _configuration;
+        private readonly IConfiguration _configuration;
 
         public WarehouseRepositoryImpl(IConfiguration configuration)
         {
