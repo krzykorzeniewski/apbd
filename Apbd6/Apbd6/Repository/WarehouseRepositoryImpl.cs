@@ -27,8 +27,10 @@ namespace Abpd6.Repository
                     return 0;
                 }
 
-                var orderId = await FetchOrderId(productWarehouseDto.IdProduct, productWarehouseDto.Amount, productWarehouseDto.CreatedAt, sqlConnection, transaction);
-                if (orderId == null || !await CheckOrderCreationDate(orderId.Value, productWarehouseDto.CreatedAt, sqlConnection, transaction))
+                var orderId = await FetchOrderId(productWarehouseDto.IdProduct, productWarehouseDto.Amount, 
+                    productWarehouseDto.CreatedAt, sqlConnection, transaction);
+                if (orderId == null || !await CheckOrderCreationDate(orderId.Value, productWarehouseDto.CreatedAt, 
+                        sqlConnection, transaction))
                 {
                     return 0;
                 }
@@ -48,7 +50,8 @@ namespace Abpd6.Repository
             }
         }
 
-        private async Task<int> InsertIntoDb(ProductWarehouseDto productWarehouseDto, int? orderId, SqlConnection sqlConnection, SqlTransaction transaction)
+        private async Task<int> InsertIntoDb(ProductWarehouseDto productWarehouseDto, int? orderId, SqlConnection sqlConnection,
+            SqlTransaction transaction)
         {
             var currDate = DateTime.Now;
             var productPrice = await FetchProductPrice(productWarehouseDto.IdProduct, sqlConnection, transaction);

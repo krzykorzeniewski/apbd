@@ -19,7 +19,6 @@ namespace Abpd6.Controllers
         [HttpPost]
         public async Task<IActionResult> AddProductToWarehouse(ProductWarehouseDto productWarehouseDto)
         {
-            // Basic validation for the request
             if (productWarehouseDto == null)
             {
                 return BadRequest("Invalid request");
