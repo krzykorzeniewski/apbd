@@ -1,24 +1,45 @@
-﻿using Abpd6.Dto;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using Abpd6.Dto;
 using Abpd6.Repository;
-using Microsoft.AspNetCore.Mvc;
 
-namespace Abpd6.Controller;
-
-[ApiController]
-[Route("/[controller]")]
-public class WarehouseController : ControllerBase
+namespace Abpd6.Controllers
 {
-
-    private IWarehouseRepository _warehouseRepository;
-
-    public WarehouseController(IWarehouseRepository warehouseRepository)
+    [ApiController]
+    [Route("[controller]")]
+    public class WarehouseController : ControllerBase
     {
-        _warehouseRepository = warehouseRepository;
-    }
-    
-    [HttpPost]
-    public async Task<IActionResult> AddProduct(ProductWarehouseDto productWarehouseDto)
-    {
-        return null;
+        private readonly IWarehouseRepository _warehouseRepository;
+
+        public WarehouseController(IWarehouseRepository warehouseRepository)
+        {
+            _warehouseRepository = warehouseRepository;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddProductToWarehouse(ProductWarehouseDto productWarehouseDto)
+        {
+            // Basic validation for the request
+            if (productWarehouseDto == null)
+            {
+                return BadRequest("Invalid request");
+            }
+            
+            try
+            {
+                int result = await _warehouseRepository.Add(productWarehouseDto);
+                
+                if (result == 0)
+                {
+                    return BadRequest("Invalid request");
+                }
+
+                return Created($"Warehouse/{result}", productWarehouseDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
     }
 }
