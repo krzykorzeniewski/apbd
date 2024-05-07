@@ -74,7 +74,7 @@ public class DbRepositoryImpl : IDbRepository
         }
     }
 
-    private static async Task<int> InsertBookToDb(BookPostDto book, SqlConnection sqlConnection, 
+    private async Task<int> InsertBookToDb(BookPostDto book, SqlConnection sqlConnection, 
         DbTransaction sqlTransaction)
     {
         var sqlCommand = new SqlCommand("INSERT INTO Books (Title) OUTPUT INSERTED.Pk VALUES (@Title)", 
