@@ -346,15 +346,14 @@ namespace Exercise6
         public static IEnumerable<Dept> Task14()
         {
             IEnumerable<Dept> result = Depts
-                    .GroupJoin(Emps, dept => dept.Deptno, emp => emp.Deptno, (dept, emp) => new
-                    {
-                        Dept = dept,
-                        Emps = emp.Count()
-                    })
-                    .Where(e => e.Emps == 5 || e.Emps == 0)
-                    .Select(e => e.Dept)
-                    .OrderBy(d => d.Dname);
-            //result =
+                .GroupJoin(Emps, dept => dept.Deptno, emp => emp.Deptno, (dept, emp) => new
+                {
+                    Dept = dept,
+                    Emps = emp.Count()
+                })
+                .Where(e => e.Emps == 5 || e.Emps == 0)
+                .Select(e => e.Dept)
+                .OrderBy(d => d.Dname);
             return result;
         }
     }
