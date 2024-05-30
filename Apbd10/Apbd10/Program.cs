@@ -1,4 +1,5 @@
 using Apbd10.Contexts;
+using Apbd10.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,9 @@ builder.Services.AddDbContext<MyDatabaseContext>(opt =>
 {
     opt.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
 });
+builder.Services.AddScoped<IAccountsService, AccountsServiceImpl>();
+builder.Services.AddScoped<DbContext, MyDatabaseContext>();
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
@@ -22,6 +26,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.MapControllers();
 app.Run();
 
