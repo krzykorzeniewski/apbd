@@ -9,10 +9,12 @@ namespace Apbd10.Models;
 public class ProductCategory
 {
     [Column("FK_product")]
+    [ForeignKey(nameof(Product))]
     public int IdProduct { get; set; }
     public Product Product { get; set; }
     
     [Column("FK_category")]
+    [ForeignKey(nameof(Category))]
     public int IdCategory { get; set; }
     public Category Category { get; set; }
 }

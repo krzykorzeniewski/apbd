@@ -1,4 +1,5 @@
-﻿using Apbd10.RequestModels;
+﻿using Apbd10.Exceptions;
+using Apbd10.RequestModels;
 using Apbd10.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,9 +24,9 @@ public class ProductsController : ControllerBase
             await _productsService.AddProductAndCategories(product);
             return Created();
         }
-        catch (Exception e)
+        catch (CategoryNotFoundException e)
         {
-            return BadRequest(e.Message);
+            return NotFound(e);
         }
     }
 }

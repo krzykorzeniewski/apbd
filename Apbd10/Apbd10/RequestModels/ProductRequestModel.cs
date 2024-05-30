@@ -24,5 +24,7 @@ public class ProductRequestModel
     [Required]
     [Precision(5,2)]
     public decimal ProductDepth { get; set; }
-    
+
+    [Required]
+    public ICollection<int> ProductCategories { get; set; }
 }
