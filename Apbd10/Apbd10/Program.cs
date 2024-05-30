@@ -13,7 +13,7 @@ builder.Services.AddDbContext<MyDatabaseContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
 });
 builder.Services.AddScoped<IAccountsService, AccountsServiceImpl>();
-builder.Services.AddScoped<DbContext, MyDatabaseContext>();
+builder.Services.AddScoped<IProductsService, ProductsServiceImpl>();
 builder.Services.AddControllers();
 
 var app = builder.Build();
