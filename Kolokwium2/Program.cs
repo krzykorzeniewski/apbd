@@ -1,4 +1,5 @@
 using Kolokwium2.Context;
+using Kolokwium2.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,7 @@ builder.Services.AddDbContext<MyDbContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
 });
 builder.Services.AddControllers();
+builder.Services.AddScoped<ICharactersService, CharactersServiceImpl>();
 
 var app = builder.Build();
 
